@@ -64,12 +64,8 @@ class __BaseStructuredDataType(__BaseDocument, ABC):
         pii_entries = self._get_embedded_positions()
 
         # keep each row having the same keyword entry
-        header_keywords = []
-        for x in range(self._entries_range):
-            header_keywords.append(self._get_random_word())
-
-        for item in range(self._entries_range):
-
+        header_keywords = [self._get_random_word() for _ in range(self._entries_range)]
+        for _ in range(self._entries_range):
             ordered_dict = OrderedDict()
             for x in range(self._entries_range):
 
@@ -91,12 +87,8 @@ class __BaseStructuredDataType(__BaseDocument, ABC):
 
         structured_array = []
 
-        header_keywords = []
-        for x in range(self._entries_range):
-            header_keywords.append(self._get_random_word())
-
-        for item in range(self._entries_range):
-
+        header_keywords = [self._get_random_word() for _ in range(self._entries_range)]
+        for _ in range(self._entries_range):
             ordered_dict = OrderedDict()
             for x in range(self._entries_range):
                 ordered_dict[header_keywords[x]] = self._get_random_word()

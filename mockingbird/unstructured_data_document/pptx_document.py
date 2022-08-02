@@ -101,7 +101,7 @@ class _PPTXBulletPointStyle(__BaseUnstructuredDataType):
 
         title.text = "An executive meeting about productivity"
         subtitle.text = "The executive put sensitive information in one of his productivity bullet points to feel " \
-                        "productive "
+                            "productive "
 
         bullet_slide_layout = prs.slide_layouts[1]
 

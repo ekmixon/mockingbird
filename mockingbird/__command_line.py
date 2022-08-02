@@ -63,8 +63,7 @@ def parse_args():
                         choices=mockingbird_extensions,
                         help="Set the file extension types. If none are set, all will be selected.")
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def setup_mockingbird_type_from_args(args):

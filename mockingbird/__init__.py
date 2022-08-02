@@ -41,8 +41,10 @@ class Mockingbird(__BaseDocument):
         for document_type in Mockingbird.all_documents:
             # Need to instantiate the class to get the extension string.
             instantiated_document = document_type()
-            assert instantiated_document.extension not in self.__extension_to_classes, \
-                "overlapping extensions! %s " % instantiated_document.extension
+            assert (
+                instantiated_document.extension not in self.__extension_to_classes
+            ), f"overlapping extensions! {instantiated_document.extension} "
+
 
             self.__extension_to_classes[instantiated_document.extension] = document_type
 
@@ -60,16 +62,16 @@ class Mockingbird(__BaseDocument):
         Create and add a list of instantiated objects this Mockingbird object will output. _file_extensions
         is set by the user / developer.
         """
-        doc_array = []
-        for ext in self._file_extensions:
-            doc_array.append(self.__extension_to_classes.get(ext))
+        doc_array = [
+            self.__extension_to_classes.get(ext) for ext in self._file_extensions
+        ]
 
         while len(self._meta_data_object) < self._file_minimum:
             """
             Keep repeating the process until we've reached our _file_minimum. This probably over-generates, but over
             generating is easier than under. 
             """
-            for x in range(len(doc_array)):
+            for item in doc_array:
                 """
                 Copy the sensitive-data inputted into this Mockingbird instance, and inject it into each child-object
                 in this for loop. Since every object all inherits from the same __BaseDocument type, polymorphism
@@ -78,7 +80,7 @@ class Mockingbird(__BaseDocument):
                 """
 
                 # Create an object for each class selected
-                child_class = doc_array[x]
+                child_class = item
                 child_object = child_class()
 
                 # Clone over the sensitive-data in "self" into all the children objects.
@@ -96,7 +98,10 @@ class Mockingbird(__BaseDocument):
         Sets the output extension types.
         """
         for ext in extensions:
-            assert ext in self.__extension_to_classes, "extension %s not found in Mockingbird" % ext
+            assert (
+                ext in self.__extension_to_classes
+            ), f"extension {ext} not found in Mockingbird"
+
 
         self._file_extensions = extensions
 

@@ -48,17 +48,20 @@ class __BaseUnstructuredDataType(__BaseDocument, ABC):
 
         pii_positions = self._get_embedded_positions()
 
-        sensitive_soup = ""
-        for x in range(self._total_entries):
-            if x in pii_positions:
-                # todo why replace "\n" with "\n\n"? I can't remember the reason. Has something to do with
-                # generating certifications.
-                sensitive_soup += pii_positions[x] + " " + self._get_sensitive_data(pii_positions[x]).replace("\n",
-                                                                                                              "\n\n") + " "
-            else:
-                sensitive_soup += self._get_random_word() + " "
-
-        return sensitive_soup
+        return "".join(
+            (
+                (
+                    f"{pii_positions[x]} "
+                    + self._get_sensitive_data(pii_positions[x]).replace(
+                        "\n", "\n\n"
+                    )
+                )
+                + " "
+            )
+            if x in pii_positions
+            else f"{self._get_random_word()} "
+            for x in range(self._total_entries)
+        )
 
     def _get_chat_log(self) -> List[str]:
         """
@@ -80,20 +83,36 @@ class __BaseUnstructuredDataType(__BaseDocument, ABC):
         pii_positions = self._get_embedded_positions()
 
         for x in range(self._total_entries):
+            chat_log.append("kuroi_katto, [Jan 6, 2021 at 10:27:10 PM]:")
             if x in pii_positions:
                 keyword = pii_positions[x]
-                chat_log.append("kuroi_katto, [Jan 6, 2021 at 10:27:10 PM]:")
-                chat_log.append("Can you send me the %s" % keyword)
-
-                chat_log.append("Trem_Ble_Shin, [Jan 6, 2021 at 10:27:20 PM]:")
-                chat_log.append("Sure, my %s is %s" % (keyword, self._get_sensitive_data(keyword=keyword)))
+                chat_log.extend(
+                    (
+                        f"Can you send me the {keyword}",
+                        "Trem_Ble_Shin, [Jan 6, 2021 at 10:27:20 PM]:",
+                        "Sure, my %s is %s"
+                        % (keyword, self._get_sensitive_data(keyword=keyword)),
+                    )
+                )
 
             else:
-                chat_log.append("kuroi_katto, [Jan 6, 2021 at 10:27:10 PM]:")
-                chat_log.append(" ".join([self._get_random_word() for _ in range(self._enumerated_bounds)]))
-
-                chat_log.append("Trem_Ble_Shin, [Jan 6, 2021 at 10:27:20 PM]:")
-                chat_log.append(" ".join([self._get_random_word() for _ in range(self._enumerated_bounds)]))
+                chat_log.extend(
+                    (
+                        " ".join(
+                            [
+                                self._get_random_word()
+                                for _ in range(self._enumerated_bounds)
+                            ]
+                        ),
+                        "Trem_Ble_Shin, [Jan 6, 2021 at 10:27:20 PM]:",
+                        " ".join(
+                            [
+                                self._get_random_word()
+                                for _ in range(self._enumerated_bounds)
+                            ]
+                        ),
+                    )
+                )
 
         return chat_log
 

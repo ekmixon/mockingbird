@@ -35,7 +35,7 @@ class _MetaData:
     """
 
     def __init__(self):
-        self._meta_data_dict = dict()
+        self._meta_data_dict = {}
 
     def __len__(self):
         return len(self._meta_data_dict)
@@ -109,7 +109,7 @@ class _MetaData:
 
         for file_name in self._meta_data_dict.keys():
             file_mappings = self._meta_data_dict[file_name]
-            new_mappings = dict()
+            new_mappings = {}
 
             for key in file_mappings:
                 parent_key = mappings.get(key)
@@ -131,10 +131,8 @@ class _MetaData:
                  }
         """
 
-        meta_data_dict = dict()
-        meta_data_dict["total_fabricated_files"] = len(self._meta_data_dict.keys())
-
-        collective_fabricated_data = defaultdict(lambda: 0, dict())
+        meta_data_dict = {"total_fabricated_files": len(self._meta_data_dict.keys())}
+        collective_fabricated_data = defaultdict(lambda: 0, {})
         for file in self._meta_data_dict.keys():
 
             file_meta_data = self._meta_data_dict[file]
