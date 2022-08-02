@@ -47,7 +47,7 @@ class __BaseDocument(ABC):
         self.extension = extension  # to be defined in inherited classes
         self.document_name = str(random.getrandbits(25))
 
-        self._sensitive_data_mappings = dict()
+        self._sensitive_data_mappings = {}
 
         # lower and upper bounds for _total_entries
         self._configurable_settings_name = "_default_config.yml"
@@ -55,7 +55,7 @@ class __BaseDocument(ABC):
         self.__upper_bound_delta: int
         self._total_entries: int = 0
 
-        self.__fabricated_count = defaultdict(lambda: 0, dict())  # Set zero's for every value in dict
+        self.__fabricated_count = defaultdict(lambda: 0, {})
         self.__init_bounds()
 
         self._meta_data_object = _MetaData()
@@ -123,8 +123,10 @@ class __BaseDocument(ABC):
 
         extension_folder = os.path.join(save_path, extension)
         os.makedirs(extension_folder, exist_ok=True)
-        save_file_path = os.path.join(extension_folder, self.document_name + optional_decorator + "." + extension)
-        return save_file_path
+        return os.path.join(
+            extension_folder,
+            self.document_name + optional_decorator + "." + extension,
+        )
 
     # Protected Methods #
 
@@ -157,7 +159,10 @@ class __BaseDocument(ABC):
         @param keyword: A string entry contained in _sensitive_data_mappings
         @return: A random value contained in the keyword's respective mapping file.
         """
-        assert keyword in self._sensitive_data_mappings, "Keyword %s not in self._sensitive_data_mappings" % keyword
+        assert (
+            keyword in self._sensitive_data_mappings
+        ), f"Keyword {keyword} not in self._sensitive_data_mappings"
+
 
         self.__fabricated_count[keyword] += 1
 

@@ -85,7 +85,7 @@ class MockingbirdFromCSV(Mockingbird):
         assign each subkey to the same value as it's parent key. (i.e "ssn;code" -> ["305-9353"] gets converted into
         "ssn" -> ["305-9353"], "code"-> ["305-9353"]) 
         """
-        self.__pii_dictionary = dict()
+        self.__pii_dictionary = {}
         for key in csv_dictionary.keys():
             keywords = key.split(";")
 
@@ -97,7 +97,7 @@ class MockingbirdFromCSV(Mockingbird):
         gets tested individually in it's own set of documents.
         """
         keywords_groupings = []
-        self.__reverse_mapping = dict()  # Used for collecting meta-data
+        self.__reverse_mapping = {}
         for key in csv_dictionary.keys():
             keywords = key.split(";")
             keywords_groupings.append(keywords)
@@ -139,15 +139,14 @@ class MockingbirdFromCSV(Mockingbird):
             {"social security": ["355-555-555", "222-222-222"], ...}
         """
 
-        csv_dictionary = defaultdict(lambda: [], dict())
+        csv_dictionary = defaultdict(lambda: [], {})
         with open(csv_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 for name in reader.fieldnames:
                     row_value = row[name]
                     if row_value != "":
-                        csv_dictionary[name].append(row[name])
-
+                        csv_dictionary[name].append(row_value)
         return csv_dictionary
 
 

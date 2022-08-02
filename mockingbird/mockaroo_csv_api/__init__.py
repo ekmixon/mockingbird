@@ -57,7 +57,8 @@ class MockarooCsvAPI:
         @param output_path: Where to put the csv file.
         """
 
-        post_url = self.mockaroo_api_endpoint + "?key=" + self.api_key + '&count=' + str(self.row_count)
+        post_url = f"{self.mockaroo_api_endpoint}?key={self.api_key}&count={str(self.row_count)}"
+
         post_request = requests.post(url=post_url, json=fields)
 
         # todo, some error checking here. Perhaps some engineers know how to check for error codes better.

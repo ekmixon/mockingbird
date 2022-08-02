@@ -34,21 +34,20 @@ class CSVDocument(__BaseStructuredDataType):
 
         save_file = self.setup_save_file(save_path=save_path, extension=self.extension)
 
-        output_file = open(save_file, 'w')
-        csv_output = csv.writer(output_file)
+        with open(save_file, 'w') as output_file:
+            csv_output = csv.writer(output_file)
 
-        first_row = True
-        structured_array = self._get_structured_data()
+            first_row = True
+            structured_array = self._get_structured_data()
 
-        for line in structured_array:
-            if first_row:
-                # write header first
-                header = line.keys()
-                csv_output.writerow(header)
-                first_row = False
+            for line in structured_array:
+                if first_row:
+                    # write header first
+                    header = line.keys()
+                    csv_output.writerow(header)
+                    first_row = False
 
-            # export all line's values
-            csv_output.writerow(line.values())
+                # export all line's values
+                csv_output.writerow(line.values())
 
-        output_file.close()
         self._log_save(save_file)
